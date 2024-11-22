@@ -1,3 +1,4 @@
+
 name: Build images
 
 on:
@@ -10,28 +11,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Install dependencies
         run: |
           sudo apt update
           sudo apt upgrade
           sudo apt install parted wget dosfstools zip
 
-      # Build Images
-      # Note: Uploading zip file artifact will be double zip. Do not delete .img file
-      # See https://github.com/actions/upload-artifact#zipped-artifact-downloads
-
-
-
-
+      # Build Raspberry Pi 4 AArch64 Image
       - name: Build Raspberry Pi 4 AArch64 Image
         run: |
-          sudo bash create-image aarch64 32GB
+          sudo bash create-image aarch64 32G
           sudo cp rpi-aarch64-archlinux.img rpi-4-aarch64-archlinux.img
-          zip -v rpi-4-aarch64-archlinux.img.zip rpi-4-aarch64-archlinux.img
-
+          zip -v rpi-3-aarch64-archlinux.img.zip rpi-4-aarch64-archlinux.img
 
       # Upload artifacts
-
+      - name: Upload Raspberry Pi 3 AArch64 Image artifact
         uses: actions/upload-artifact@v4
         with:
           name: rpi-4-aarch64-archlinux.img
@@ -46,3 +41,4 @@ jobs:
             rpi-4-aarch64-archlinux.img.zip
         env:
           GITHUB_TOKEN: ${{ github.token }}
+
